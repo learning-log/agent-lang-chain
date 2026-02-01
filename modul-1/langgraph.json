@@ -1,0 +1,14 @@
+{
+  "dockerfile_lines": [],
+  "graphs": {
+
+    "router": "./router.py:graph",
+
+    "agent": "./agent.py:graph"
+   
+  },
+
+  "dependencies": [
+    "."
+  ]
+}
