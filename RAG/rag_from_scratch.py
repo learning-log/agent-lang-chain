@@ -3,11 +3,12 @@ from langchain_huggingface import ChatHuggingFace,  HuggingFaceEmbeddings, Huggi
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import numpy as np
 import os
+from langchain_classic import hub
 
 
 embedder = HuggingFaceEndpointEmbeddings(model = "sentence-transformers/all-mpnet-base-v2",
                                          task="feature-extraction",
-                                         huggingfacehub_api_token=os.environ["HF_TOKEN"])
+                                         huggingfacehub_api_token=os.environ.get("HF_TOKEN"))
 
 def getEmbedder(text):
     return embedder.embed_query(text)
@@ -43,7 +44,7 @@ prompt = "what is Task Decomposition?"
 system_prompt = "Given the context answer following."
 docs = retriever.invoke(prompt)
 print(len(docs))
-print(docs)
+# print(docs)
 
 # from langchain.chat_models import Chat
 model_id = "meta-llama/Llama-3.2-3B-Instruct"
@@ -63,7 +64,11 @@ print(prompt)
 chain = prompt | llm
 # print(chain.invoke({"context":docs,"question":"What is Task Decomposition?"}))
 # print(llm.invoke("Context: "+docs[0].page_content+"\n"+system_prompt+prompt))
-import langchainhub
-prompt_hub_rag = langchainhub.hub("rlm/rag-prompt")
-print(prompt_hub_rag)
+# from  langchain import hub
 
+
+prompt_hub_rag = hub.pull("rlm/rag-prompt")
+chain = prompt_hub_rag | llm
+
+# print(prompt_hub_rag)
+print(chain.invoke({"context":docs,"question":"What is computer?"}))
